@@ -1,6 +1,10 @@
 import torch.nn as nn
 import torch
-
+import warnings
+try:
+    from groupy.gconv.pytorch_gconv import P4ConvZ2, P4ConvP4
+except ImportError:
+    warnings.warn("Warning: 'groupy' package not found. Please install it if you need to use group equivariant CNN.")
 
 class ConvLSTMCell(nn.Module):
 
@@ -156,9 +160,10 @@ class ConvLSTM(nn.Module):
 
         # Implement stateful ConvLSTM
         if hidden_state is not None:
-            raise NotImplementedError()
         # check hidden state
-        # TODO: create hidden state 
+            if len(hidden_state) != 2:
+                raise ValueError('`hidden_state` must contain both hidden and cell values')
+        # TODO: check size of hidden state 
         else:
             # Since the init is done in forward. Can send image size here
             hidden_state = self._init_hidden(batch_size=b,
