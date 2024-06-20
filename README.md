@@ -1,12 +1,8 @@
 # ConvLSTM_pytorch
-**[This](https://github.com/ndrplz/ConvLSTM_pytorch/blob/master/convlstm.py)** file **contains the implementation of Convolutional LSTM in PyTorch** made by [me](https://github.com/ndrplz) and [DavideA](https://github.com/DavideA).
+PyTorch implementation of the exact ConvLSTM in the original [paper](https://arxiv.org/pdf/1506.04214.pdf).
+The code is modified from
+**[This](https://github.com/ndrplz/ConvLSTM_pytorch/blob/master/convlstm.py)** repository. 
 
-We started from [this](https://github.com/rogertrullo/pytorch_convlstm/blob/master/conv_lstm.py) implementation and heavily refactored it add added features to match our needs.
-
-Please note that in this repository we implement the following dynamics:
-![CLSTM_dynamics](https://user-images.githubusercontent.com/7113894/59357391-15c73e00-8d2b-11e9-8234-9d51a90be5dc.png)
-
-which is a bit different from the one in the original [paper](https://arxiv.org/pdf/1506.04214.pdf).
 
 ### How to Use
 The `ConvLSTM` module derives from `nn.Module` so it can be used as any other PyTorch module.
@@ -25,10 +21,7 @@ model = ConvLSTM(input_dim=channels,
 ```
 
 ### TODO (in progress...)
-- Comment code
-- Add docs
-- Add example usage on a toy problem
-- Implement stateful mechanism
+- Add Group Equivariant CNN
 - ...
 
 ### Disclaimer
