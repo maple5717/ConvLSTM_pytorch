@@ -31,11 +31,11 @@ class GConvLSTMCell(nn.Module):
         self.padding = kernel_size[0] // 2, kernel_size[1] // 2
         self.bias = bias
 
-        self.conv_input = P4ConvZ2(in_channels=self.input_dim,
-                              out_channels=self.input_dim,
-                              kernel_size=self.kernel_size[0],
-                              padding=self.padding,
-                              bias=self.bias)
+        # self.conv_input = P4ConvZ2(in_channels=self.input_dim,
+        #                       out_channels=self.input_dim,
+        #                       kernel_size=self.kernel_size[0],
+        #                       padding=self.padding,
+        #                       bias=self.bias)
         self.conv_fi = P4ConvP4(in_channels=self.input_dim + self.hidden_dim * 2,
                               out_channels=2 * self.hidden_dim,
                               kernel_size=self.kernel_size[0],
