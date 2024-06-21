@@ -56,7 +56,8 @@ class GConvLSTMCell(nn.Module):
         h_cur, c_cur = cur_state
 
         # transform x to the g-space
-        x = self.conv_input(input_tensor)
+        # x = self.conv_input(input_tensor)
+        x = input_tensor
 
         combined_xh = torch.cat([x, h_cur], dim=1)  # concatenate along channel axis
         combined_xhc = torch.cat([combined_xh, c_cur], dim=1)
@@ -137,7 +138,7 @@ class GConvLSTM(nn.Module):
             # (t, b, c, h, w) -> (b, t, c, h, w)
             input_tensor = input_tensor.permute(1, 0, 2, 3, 4)
 
-        b, _, _, h, w = input_tensor.size()
+        b, _, _, _, h, w = input_tensor.size()
 
         # Implement stateful ConvLSTM
         if hidden_states is not None:
@@ -216,13 +217,13 @@ if __name__ == "__main__":
     
 
     B, T, C, H, W = 1, 7, 1, 3, 3
-    x = torch.randn([B, T, C, H, W])
+    x = torch.randn([B, T, C, 4, H, W])
     # print(x.shape)
 
     x_ = torch.rot90(x, k=1, dims=(-2, -1))
     y1 = model(x)[0][0]
-    y2 = model(x_)[0][0]
+    # y2 = model(x_)[0][0]
     # print("che")
     print(y1.shape)
-    print(y1[0, -1, 0])
-    print(y2[0, -1, 0])
+    # print(y1[0, -1, 0])
+    # print(y2[0, -1, 0])
