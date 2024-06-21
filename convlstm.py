@@ -1,10 +1,6 @@
 import torch.nn as nn
 import torch
 import warnings
-try:
-    from groupy.gconv.pytorch_gconv import P4ConvZ2, P4ConvP4
-except ImportError:
-    warnings.warn("Warning: 'groupy' package not found. Please install it if you need to use group equivariant CNN.")
 
 class ConvLSTMCell(nn.Module):
 
@@ -139,7 +135,7 @@ class ConvLSTM(nn.Module):
 
         self.cell_list = nn.ModuleList(cell_list)
 
-    def forward(self, input_tensor, hidden_state=None):
+    def forward(self, input_tensor, hidden_states=None):
         """
 
         Parameters
@@ -159,14 +155,15 @@ class ConvLSTM(nn.Module):
         b, _, _, h, w = input_tensor.size()
 
         # Implement stateful ConvLSTM
-        if hidden_state is not None:
+        if hidden_states is not None:
         # check hidden state
-            if len(hidden_state) != 2:
-                raise ValueError('`hidden_state` must contain both hidden and cell values')
+            for hidden_state in hidden_states:
+                if len(hidden_state) != 2:
+                    raise ValueError('`hidden_state` must contain both hidden and cell values')
         # TODO: check size of hidden state 
         else:
             # Since the init is done in forward. Can send image size here
-            hidden_state = self._init_hidden(batch_size=b,
+            hidden_states = self._init_hidden(batch_size=b,
                                              image_size=(h, w))
 
         layer_output_list = []
@@ -177,7 +174,7 @@ class ConvLSTM(nn.Module):
 
         for layer_idx in range(self.num_layers):
 
-            h, c = hidden_state[layer_idx]
+            h, c = hidden_states[layer_idx]
             output_inner = []
             for t in range(seq_len):
                 h, c = self.cell_list[layer_idx](input_tensor=cur_layer_input[:, t, :, :, :],
@@ -213,6 +210,8 @@ class ConvLSTM(nn.Module):
         if not isinstance(param, list):
             param = [param] * num_layers
         return param
+    
+
     
 
 if __name__ == "__main__":
